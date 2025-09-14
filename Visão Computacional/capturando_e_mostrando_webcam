@@ -1,0 +1,29 @@
+#include <iostream>
+#include <opencv2/opencv.hpp>
+
+using namespace cv;
+
+int main() {
+    VideoCapture cap(0);
+    if (!cap.isOpened()) {
+        std::cout << "Erro ao abrir a webcam!" << std::endl;
+        return -1;
+    }
+
+    Mat frame;
+    int frame_count = 0; // Contador de frama
+
+    while (true) {
+        cap >> frame;
+        if (frame.empty()) {
+            break;
+        }
+        imshow("Webcam", frame); //Mostra imagem capturada
+
+        if (waitKey(30) >= 0) { //30 ms depois disso se clicar em qlqr coisa ele fecha
+            break;
+        }
+    }
+
+    return 0;
+}
