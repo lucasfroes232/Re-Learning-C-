@@ -1,0 +1,48 @@
+#include <iostream>
+#include <opencv2/opencv.hpp>
+
+using namespace cv;
+
+int main() {
+    VideoCapture cap(0);
+    if (!cap.isOpened()) {
+        std::cout << "Erro ao abrir a webcam!" << std::endl;
+        return -1;
+    }
+
+    Mat frame;
+    int frame_count = 0; // Contador de frama
+
+    while (true) {
+        cap >> frame;
+        if (frame.empty()) {
+            break;
+        }
+
+        frame_count++; // Incrementa o contador a cada frame capturado
+
+        // CONDIÇÃO PARA IMPRIMIR A MATRIZ
+        // imprimir no primeiro frame, no frame 100 e no frame 200.
+   
+        if (frame_count == 1 || frame_count == 100 || frame_count == 200) {
+            
+       
+            std::cout << "\n=========================================================\n";
+            std::cout << "IMPRIMINDO A MATRIZ COMPLETA - FRAME #" << frame_count << "\n";
+            std::cout << "=========================================================\n\n";
+
+            // A linha que efetivamente imprime a matriz no terminal
+            std::cout << frame << std::endl;
+
+            std::cout << "\n--- FIM DA MATRIZ ---\n\n";
+        }
+
+        imshow("Webcam", frame);
+
+        if (waitKey(30) >= 0) { //30 ms depois disso se clicar em qlqr coisa ele fecha
+            break;
+        }
+    }
+
+    return 0;
+}
