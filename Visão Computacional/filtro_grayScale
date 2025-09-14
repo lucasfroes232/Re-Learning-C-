@@ -1,0 +1,47 @@
+#include <iostream>
+#include <opencv2/opencv.hpp>
+
+// Incluir para medição de tempo
+#include <chrono>
+
+using namespace cv;
+
+int main() {
+    VideoCapture cap(0);
+    if (!cap.isOpened()) {
+        std::cout << "Erro ao abrir a webcam!" << std::endl;
+        return -1;
+    }
+
+    // Variáveis para alocar imagens
+    Mat frame_bgr;
+    Mat snapshot_grayscale; // Matriz que vai guardar a imagem P&B
+
+    while (true) {
+        // Captura o frame ao vivo
+        cap >> frame_bgr;
+        if (frame_bgr.empty()) {
+            break;
+        }
+	// Converte o frame atual (BGR) para escala de cinza (preto e branco)
+         cvtColor(frame_bgr, snapshot_grayscale, COLOR_BGR2GRAY);
+        
+        // Exibe a janela principal com o vídeo colorido ao vivo
+        imshow("Webcam Ao Vivo - Colorido", frame_bgr);
+
+        // Exibe a segunda janela com o video preto e branco ao vivo
+        imshow("Snapshot em Preto e Branco (capturado em 1s)", snapshot_grayscale);
+       
+
+        // Condição de saída (pressionar qualquer tecla)
+        if (waitKey(30) >= 0) {
+            break;
+        }
+    }
+
+    // Libera a câmera e fecha todas as janelas ao sair
+    cap.release();
+    destroyAllWindows();
+
+    return 0;
+}
